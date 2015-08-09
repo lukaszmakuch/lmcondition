@@ -37,6 +37,7 @@ abstract class ConditionAbstract implements Condition
 
     public function removeNegation()
     {
+        $this->isNegated = false;
     }
 
     protected abstract function isTrueInImpl(Context $context);
