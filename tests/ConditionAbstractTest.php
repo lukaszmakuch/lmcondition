@@ -67,6 +67,13 @@ class ConditionAbstractTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->c->isTrueIn($this->context));
     }
     
+    public function testTakingNegationIntoAccount()
+    {
+        $this->setIsTrueInImplReturnedValueTo(true);
+        $this->c->negate();
+        $this->assertFalse($this->c->isTrueIn($this->context));
+    }
+    
     protected function setIsTrueInImplReturnedValueTo($trueOrFalse)
     {
         $this->c->method('isTrueInImpl')

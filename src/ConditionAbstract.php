@@ -26,7 +26,12 @@ abstract class ConditionAbstract implements Condition
      */
     public function isTrueIn(Context $context)
     {
-        return $this->isTrueInImpl($context);
+        $notNegatedResult = $this->isTrueInImpl($context);
+        if ($this->isNegated) {
+            return !$notNegatedResult;
+        } else {
+            return $notNegatedResult;
+        }
     }
     
     public function isNegated()
