@@ -15,12 +15,19 @@ class ConditionAbstractTest extends \PHPUnit_Framework_TestCase
      * @var Condition
      */
     protected $c;
-
+    
+    /**
+     * @var Context
+     */
+    protected $context;
+    
     protected function setUp()
     {
         $this->c = $this->getMockBuilder(ConditionAbstract::class)
             ->setMethods(['isTrueInImpl'])
             ->getMock();
+        
+        $this->context = new DummyContext();
     }
     
     public function testNotNegatedByDefault()
@@ -46,5 +53,23 @@ class ConditionAbstractTest extends \PHPUnit_Framework_TestCase
         $this->c->negate();
         $this->c->removeNegation();
         $this->assertFalse($this->c->isNegated());
+    }
+    
+    public function testIsTrueImplReturningFalse()
+    {
+        $this->setIsTrueInImplReturnedValueTo(false);
+        $this->assertFalse($this->c->isTrueIn($this->context));
+    }
+    
+    public function testIsTrueImplReturningTrue()
+    {
+        $this->setIsTrueInImplReturnedValueTo(true);
+        $this->assertTrue($this->c->isTrueIn($this->context));
+    }
+    
+    protected function setIsTrueInImplReturnedValueTo($trueOrFalse)
+    {
+        $this->c->method('isTrueInImpl')
+            ->will($this->returnValue($trueOrFalse));
     }
 }

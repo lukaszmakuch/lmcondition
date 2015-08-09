@@ -21,8 +21,12 @@ abstract class ConditionAbstract implements Condition
      */
     protected $isNegated = false;
     
+    /**
+     * @see ConditionAbstract::isTrueInImpl() actual checking strategy
+     */
     public function isTrueIn(Context $context)
     {
+        return $this->isTrueInImpl($context);
     }
     
     public function isNegated()
