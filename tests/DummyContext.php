@@ -1,5 +1,6 @@
 <?php
-/*
+
+/**
  * This file is part of the LmCondition library.
  *
  * @author Łukasz Makuch <kontakt@lukaszmakuch.pl>
