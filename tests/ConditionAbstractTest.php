@@ -27,4 +27,10 @@ class ConditionAbstractTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertFalse($this->c->isNegated());
     }
+    
+    public function testNegating()
+    {
+        $this->c->negate();
+        $this->assertTrue($this->c->isNegated());
+    }
 }
