@@ -7,9 +7,13 @@
  * @license MIT http://opensource.org/licenses/MIT
  */
 
-namespace lukaszmakuch\LmCondition;
+namespace lukaszmakuch\LmCondition\tests;
 
-class ConditionAbstractTest extends \PHPUnit_Framework_TestCase
+use lukaszmakuch\LmCondition\Condition;
+use lukaszmakuch\LmCondition\ConditionAbstract;
+use PHPUnit_Framework_TestCase;
+
+class ConditionAbstractTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var Condition

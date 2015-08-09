@@ -7,7 +7,9 @@
  * @license MIT http://opensource.org/licenses/MIT
  */
 
-namespace lukaszmakuch\LmCondition;
+namespace lukaszmakuch\LmCondition\tests;
+
+use lukaszmakuch\LmCondition\Context;
 
 /**
  * Does nothing, created for testing purposes.
