@@ -20,9 +20,9 @@ class KeyValueContext implements Context
 {
     protected $keyToValueMap;
     
-    public function __construct()
+    public function __construct(array $keyToValueMap = [])
     {
-        $this->keyToValueMap = [];
+        $this->keyToValueMap = $keyToValueMap;
     }
     
     /**

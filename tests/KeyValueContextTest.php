@@ -34,4 +34,10 @@ class KeyValueContextTest extends \PHPUnit_Framework_TestCase
     {
         $this->context->get("not_existing_key");
     }
+    
+    public function testSettingValuesInConstructor()
+    {
+        $context = new KeyValueContext(["myKey" => "myVal"]);
+        $this->assertEquals("myVal", $context->get("myKey"));
+    }
 }
