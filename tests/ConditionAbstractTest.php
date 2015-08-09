@@ -33,4 +33,11 @@ class ConditionAbstractTest extends \PHPUnit_Framework_TestCase
         $this->c->negate();
         $this->assertTrue($this->c->isNegated());
     }
+    
+    public function testNegatingTwoTimes()
+    {
+        $this->c->negate();
+        $this->c->negate();
+        $this->assertTrue($this->c->isNegated());
+    }
 }
