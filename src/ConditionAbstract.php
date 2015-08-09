@@ -10,7 +10,10 @@
 namespace lukaszmakuch\LmCondition;
 
 /**
- * Description of ConditionAbstract
+ * Implements all logic that responsible for negating conditions.
+ * 
+ * All what's needed to be done in order to implement a condition that 
+ * may be negated is overriding the {@see ConditionAbstract::isTrueInImpl()} method.
  *
  * @author Łukasz Makuch <kontakt@lukaszmakuch.pl>
  */
@@ -49,5 +52,11 @@ abstract class ConditionAbstract implements Condition
         $this->isNegated = false;
     }
 
+    /**
+     * Actual strategy of checking whether this condition is true or not.
+     * 
+     * This method must always return result like this condition were NOT negated.
+     * Negation is supported by {@see \lukaszmakuch\LmCondition\ConditionAbstract::isTrueIn()} method.
+     */
     protected abstract function isTrueInImpl(Context $context);
 }
