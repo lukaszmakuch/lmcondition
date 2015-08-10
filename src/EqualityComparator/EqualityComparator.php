@@ -21,10 +21,13 @@ interface EqualityComparator
     /**
      * Performs equality checking on two given conditions.
      * 
+     * Elements order doesn't matter.
+     * 
      * @param Condition $c1
      * @param Condition $c2
      * 
-     * @return boolean true if these conditions are equal, false otherwise
+     * @throws \InvalidArgumentException if it's not possible to compare these conditions
+     * @return bool true if these conditions are equal, false otherwise
      */
     public function equal(Condition $c1, Condition $c2);
 }

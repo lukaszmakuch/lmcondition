@@ -33,7 +33,7 @@ interface IntersectDetector
      * 
      * @throws \InvalidArgumentException if it's not possible to look for
      * intersection between given conditions
-     * @return boolean true if intersection occurs, false otherwise
+     * @return bool true if intersection occurs, false otherwise
      */
     public function intersectExists(Condition $c1, Condition $c2);
 }
