@@ -28,4 +28,20 @@ class ValueGreaterThanEqCmpTest extends PHPUnit_Framework_TestCase
             new ValueGreaterThan(42)
         ));
     }
+    
+    public function testComparingDifferentCondtions()
+    {
+        $this->assertFalse($this->cmp->equal(
+            new ValueGreaterThan(42), 
+            new ValueGreaterThan(43)
+        ));
+    }
+    
+    public function testNegationSupport()
+    {
+        $c1 = new ValueGreaterThan(42);
+        $c2 = new ValueGreaterThan(42);
+        $c2->negate();
+        $this->assertFalse($this->cmp->equal($c1, $c2));
+    }
 }

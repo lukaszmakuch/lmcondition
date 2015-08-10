@@ -27,6 +27,9 @@ class ValueGreaterThanEqCmp implements EqualityComparator
     
     protected function equalImpl(ValueGreaterThan $c1, ValueGreaterThan $c2)
     {
-        return (float)$c1->getMustBeGreaterThanValue() === (float)$c2->getMustBeGreaterThanValue();
+        return (
+            ($c1->isNegated() === $c2->isNegated())
+            && ((float)$c1->getMustBeGreaterThanValue() === (float)$c2->getMustBeGreaterThanValue())
+        );
     }
 }
