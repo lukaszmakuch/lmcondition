@@ -25,6 +25,11 @@ class ValueGreaterThan extends ConditionAbstract
     {
         $this->mustBeGreaterThan = $mustBeGreaterThan;
     }
+
+    public function getMustBeGreaterThanValue()
+    {
+        return $this->mustBeGreaterThan;
+    }
     
     protected function isTrueInImpl(Context $context)
     {
