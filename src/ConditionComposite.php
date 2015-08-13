@@ -23,16 +23,25 @@ class ConditionComposite extends ConditionAbstract
     
     protected function isTrueInImpl(Context $context)
     {
+        foreach ($this->getANDConditions() as $ANDCondition) {
+            if (false === $ANDCondition->isTrueIn($context)) {
+                return false;
+            }
+        }
+        
+        return true;
     }
 
     public function addAND(Condition $c)
     {
         $this->ANDConditions[] = $c;
+        return $this;
     }
     
     public function addOR(Condition $c)
     {
         $this->ORConditions[] = $c;
+        return $this;
     }
     
     /**

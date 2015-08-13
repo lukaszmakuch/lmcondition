@@ -51,11 +51,11 @@ class IntersectDetectorProxyTest extends PHPUnit_Framework_TestCase
         $c2 = new ValueGreaterThan(false);
         
         $detector = $this->getMock(IntersectDetector::class);
-        $detector->expects($this->any())
+        $detector->expects($this->atLeastOnce())
             ->method("intersectExists")
             ->willReturn(true);
         
-        $this->registry->expects($this->any())
+        $this->registry->expects($this->atLeastOnce())
             ->method("fetchValueByObjects")
             ->will($this->returnValueMap([
                 [[$c1, $c2], $detector]
