@@ -28,4 +28,16 @@ class ValueGreaterThanIntersectDetectorTest extends PHPUnit_Framework_TestCase
             new ValueGreaterThan(10)
         ));
     }
+    
+    public function testComparingDifferentonditions()
+    {
+        $c1 = new ValueGreaterThan(100);
+        $c2 = new ValueGreaterThan(10);
+        $c2->negate();
+        
+        $this->assertFalse($this->detector->intersectExists(
+            $c1,
+            $c2
+        ));
+    }
 }
