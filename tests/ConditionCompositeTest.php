@@ -22,6 +22,14 @@ class ConditionCompositeTest extends \PHPUnit_Framework_TestCase
         $this->context = new \lukaszmakuch\LmCondition\tests\DummyContext();
     }
     
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testExceptionIfUsingEmpty()
+    {
+        $this->composite->isTrueIn($this->context);
+    }
+    
     public function testHoldingANDCondition()
     {
         $andCond1 = new BooleanCondition(true);

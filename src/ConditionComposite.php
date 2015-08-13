@@ -20,19 +20,6 @@ class ConditionComposite extends ConditionAbstract
         $this->ANDConditions = [];
         $this->ORConditions = [];
     }
-    
-    protected function isTrueInImpl(Context $context)
-    {
-        if ($this->anyORConditionIsTrueIn($context)) {
-            return true;
-        }
-        
-        if (empty($this->getANDConditions())) {
-            return false;
-        }
-        
-        return $this->allANDConditionsAreTrueIn($context);
-    }
 
     public function addAND(Condition $c)
     {
@@ -60,6 +47,30 @@ class ConditionComposite extends ConditionAbstract
     public function getORConditions()
     {
         return $this->ORConditions;
+    }
+    
+    protected function isTrueInImpl(Context $context)
+    {
+        if ($this->isEmpty()) {
+            throw new \RuntimeException(
+                "Trying to check an empty condition composite"
+            );
+        }
+        
+        if ($this->anyORConditionIsTrueIn($context)) {
+            return true;
+        }
+        
+        if (empty($this->getANDConditions())) {
+            return false;
+        }
+        
+        return $this->allANDConditionsAreTrueIn($context);
+    }
+    
+    protected function isEmpty()
+    {
+        return empty($this->getORConditions()) && empty($this->getANDConditions());
     }
     
     protected function anyORConditionIsTrueIn(Context $context)
