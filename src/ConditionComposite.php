@@ -23,24 +23,15 @@ class ConditionComposite extends ConditionAbstract
     
     protected function isTrueInImpl(Context $context)
     {
-        foreach ($this->getORConditions() as $ORCondition) {
-            if (true === $ORCondition->isTrueIn($context)) {
-                return true;
-            }
+        if ($this->anyORConditionIsTrueIn($context)) {
+            return true;
         }
         
-        $ANDConditions = $this->getANDConditions();
-        if (empty($ANDConditions)) {
+        if (empty($this->getANDConditions())) {
             return false;
         }
         
-        foreach ($ANDConditions as $singleANDCondition) {
-            if (false === $singleANDCondition->isTrueIn($context)) {
-                return false;
-            }
-        }
-        
-        return true;
+        return $this->allANDConditionsAreTrueIn($context);
     }
 
     public function addAND(Condition $c)
@@ -69,5 +60,27 @@ class ConditionComposite extends ConditionAbstract
     public function getORConditions()
     {
         return $this->ORConditions;
+    }
+    
+    protected function anyORConditionIsTrueIn(Context $context)
+    {
+        foreach ($this->getORConditions() as $ORCondition) {
+            if (true === $ORCondition->isTrueIn($context)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    protected function allANDConditionsAreTrueIn(Context $context)
+    {
+        foreach ($this->getANDConditions() as $singleANDCondition) {
+            if (false === $singleANDCondition->isTrueIn($context)) {
+                return false;
+            }
+        }
+        
+        return true;
     }
 }
