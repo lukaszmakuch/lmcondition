@@ -65,11 +65,16 @@ class ConditionComposite extends ConditionAbstract
     
     protected function throwRuntimeExceptionIfEmpty()
     {
-        if (empty($this->getORConditions()) && empty($this->getANDConditions())) {
+        if ($this->isEmpty()) {
             throw new \RuntimeException(
                 "Trying to check an empty condition composite"
             );
         }
+    }
+    
+    protected function isEmpty()
+    {
+        return empty($this->getORConditions()) && empty($this->getANDConditions());
     }
     
     protected function anyORConditionIsTrueIn(Context $context)
