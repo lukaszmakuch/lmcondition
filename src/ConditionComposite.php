@@ -9,7 +9,6 @@
 
 namespace lukaszmakuch\LmCondition;
 
-
 class ConditionComposite extends ConditionAbstract
 {
     protected $ANDConditions;
@@ -51,11 +50,7 @@ class ConditionComposite extends ConditionAbstract
     
     protected function isTrueInImpl(Context $context)
     {
-        if ($this->isEmpty()) {
-            throw new \RuntimeException(
-                "Trying to check an empty condition composite"
-            );
-        }
+        $this->throwRuntimeExceptionIfEmpty();
         
         if ($this->anyORConditionIsTrueIn($context)) {
             return true;
@@ -68,9 +63,13 @@ class ConditionComposite extends ConditionAbstract
         return $this->allANDConditionsAreTrueIn($context);
     }
     
-    protected function isEmpty()
+    protected function throwRuntimeExceptionIfEmpty()
     {
-        return empty($this->getORConditions()) && empty($this->getANDConditions());
+        if (empty($this->getORConditions()) && empty($this->getANDConditions())) {
+            throw new \RuntimeException(
+                "Trying to check an empty condition composite"
+            );
+        }
     }
     
     protected function anyORConditionIsTrueIn(Context $context)
