@@ -31,4 +31,17 @@ class ConditionCompositeTest extends \PHPUnit_Framework_TestCase
             $this->composite->getANDConditions()
         );
     }
+    
+    public function testHoldingORCondition()
+    {
+        $orCond1 = new BooleanCondition(true);
+        $orCond2 = new BooleanCondition(false);
+        $this->composite->addOR($orCond1);
+        $this->composite->addOR($orCond2);
+        
+        $this->assertEquals(
+            [$orCond1, $orCond2],
+            $this->composite->getORConditions()
+        );
+    }
 }
