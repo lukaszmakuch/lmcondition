@@ -9,7 +9,9 @@
 
 namespace lukaszmakuch\LmCondition\EqualityComparator;
 
-use \lukaszmakuch\LmCondition\Condition;
+use InvalidArgumentException;
+use lukaszmakuch\ClassBasedRegistry\ClassBasedRegistry;
+use lukaszmakuch\LmCondition\Condition;
 
 /**
  * Hides many actual comparators behind the common interface.
@@ -23,15 +25,11 @@ use \lukaszmakuch\LmCondition\Condition;
  */
 class EqualityComparatorProxy implements EqualityComparator
 {
-    const REGISTERED_CMPS_OBJ = 0;
-    const REGISTERED_CMPS_CLASS1 = 1;
-    const REGISTERED_CMPS_CLASS2 = 2;
+    protected $objectToClassesRegistry;
     
-    protected $registeredComparators;
-    
-    public function __construct()
+    public function __construct(ClassBasedRegistry $objectToClassesRegistry)
     {
-        $this->registeredComparators = [];
+        $this->objectToClassesRegistry = $objectToClassesRegistry;
     }
     
     public function equal(Condition $c1, Condition $c2)
@@ -44,40 +42,22 @@ class EqualityComparatorProxy implements EqualityComparator
         $conditionClass1,
         $conditionClass2
     ) {
-        $this->registeredComparators[] = [
-            self::REGISTERED_CMPS_OBJ => $actualComparator,
-            self::REGISTERED_CMPS_CLASS1 => $conditionClass1,
-            self::REGISTERED_CMPS_CLASS2 => $conditionClass2,
-        ];
+        $this->objectToClassesRegistry->associateValueWithClasses(
+            $actualComparator,
+            [$conditionClass1, $conditionClass2]
+        );
     }
     
     /**
      * @param Condition $c1
      * @param Condition $c2
      * 
+     * @throws InvalidArgumentException
      * @return EqualityComparator
      */
     protected function findComparatorFor(Condition $c1, Condition $c2)
     {
-        foreach ($this->registeredComparators as $touple) {
-            if ($this->conditionsMatchRegisteredCmpTuple($c1, $c2, $touple)) {
-                return $touple[self::REGISTERED_CMPS_OBJ];
-            }
-        }
-        throw new \InvalidArgumentException();
+        return $this->objectToClassesRegistry->fetchValueByObjects([$c1, $c2]);
     }
     
-    protected function conditionsMatchRegisteredCmpTuple(
-        Condition $c1,
-        Condition $c2,
-        array $registeredCmpTuple
-    ) {
-        return (
-            ($c1 instanceof $registeredCmpTuple[self::REGISTERED_CMPS_CLASS1])
-            && ($c2 instanceof $registeredCmpTuple[self::REGISTERED_CMPS_CLASS2])    
-        ) || (
-            ($c2 instanceof $registeredCmpTuple[self::REGISTERED_CMPS_CLASS1])
-            && ($c1 instanceof $registeredCmpTuple[self::REGISTERED_CMPS_CLASS2])    
-        );
-    }
 }

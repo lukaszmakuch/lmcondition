@@ -10,6 +10,7 @@
 namespace lukaszmakuch\LmCondition\EqualityComparator;
 
 use InvalidArgumentException;
+use lukaszmakuch\ClassBasedRegistry\ClassBasedRegistry;
 use lukaszmakuch\LmCondition\tests\BooleanCondition;
 use lukaszmakuch\LmCondition\tests\ValueGreaterThan;
 use PHPUnit_Framework_TestCase;
@@ -18,11 +19,13 @@ class BooleanConditionDerivative extends BooleanCondition {}
 
 class EqualityComparatorProxyTest extends PHPUnit_Framework_TestCase
 {
+    protected $classBasedRegistry;
     protected $proxy;
     
     protected function setUp()
     {
-        $this->proxy = new EqualityComparatorProxy();
+        $this->classBasedRegistry = new ClassBasedRegistry();
+        $this->proxy = new EqualityComparatorProxy($this->classBasedRegistry);
     }
 
     /**
