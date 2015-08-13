@@ -73,6 +73,43 @@ class ConditionCompositeTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->composite->isTrueIn($this->context));
     }
     
+    public function testPassingORContext()
+    {
+        $c = $this->getBooleanConditionThatMustBeCheckedInTheContext(true);
+        $this->composite->addOR($c);
+        $this->composite->isTrueIn($this->context);
+    }
+    
+    
+    public function testSimpleOR()
+    {
+        $c1 = new BooleanCondition(false);
+        $c2 = new BooleanCondition(true);
+        
+        $this->composite->addOR($c1)->addOR($c2);
+        
+        $this->assertTrue($this->composite->isTrueIn($this->context));
+    }
+    
+    public function testNeverMetOR()
+    {
+        $c1 = new BooleanCondition(false);
+        $c2 = new BooleanCondition(false);
+        
+        $this->composite->addOR($c1)->addOR($c2);
+        
+        $this->assertFalse($this->composite->isTrueIn($this->context));
+    }
+    
+    public function testBothOR_AND_AND()
+    {
+       $c1 = new BooleanCondition(false);
+       $c2 = new BooleanCondition(true);
+        
+       $this->composite->addOR($c1)->addOR($c2);
+       $this->assertTrue($this->composite->isTrueIn($this->context));
+    }
+    
     /**
      * @param boolean $resultTrueOrFalse
      * @return Condition
