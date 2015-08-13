@@ -27,6 +27,12 @@ class EqualityComparatorProxy implements EqualityComparator
 {
     protected $objectToClassesRegistry;
     
+    /**
+     * Provides dependencie.
+     * 
+     * @param ClassBasedRegistry $objectToClassesRegistry used to hold actual
+     * comparators together with classes associated to them
+     */
     public function __construct(ClassBasedRegistry $objectToClassesRegistry)
     {
         $this->objectToClassesRegistry = $objectToClassesRegistry;
@@ -37,6 +43,19 @@ class EqualityComparatorProxy implements EqualityComparator
         return $this->findComparatorFor($c1, $c2)->equal($c1, $c2);
     }
     
+    /**
+     * Associates a comparator with condition classes.
+     * 
+     * Condition classes order doesn't matter.
+     * 
+     * @param \lukaszmakuch\LmCondition\EqualityComparator\EqualityComparator $actualComparator
+     * @param String $conditionClass1 condition class
+     * @param String $conditionClass2 another condition class
+     * 
+     * @return EqualityComparator
+     * @throws \InvalidArgumentException if it's not possible to find proper
+     * comparator
+     */
     public function register(
         EqualityComparator $actualComparator,
         $conditionClass1,
@@ -59,5 +78,4 @@ class EqualityComparatorProxy implements EqualityComparator
     {
         return $this->objectToClassesRegistry->fetchValueByObjects([$c1, $c2]);
     }
-    
 }
