@@ -10,6 +10,7 @@
 namespace lukaszmakuch\LmCondition\tests\IntersectDetector;
 
 use lukaszmakuch\ClassBasedRegistry\ClassBasedRegistry;
+use lukaszmakuch\LmCondition\IntersectDetector\IntersectDetector;
 use lukaszmakuch\LmCondition\IntersectDetector\IntersectDetectorProxy;
 use lukaszmakuch\LmCondition\tests\BooleanCondition;
 use lukaszmakuch\LmCondition\tests\ValueGreaterThan;
@@ -19,32 +20,47 @@ class IntersectDetectorProxyTest extends PHPUnit_Framework_TestCase
 {
     protected $registry;
     protected $proxy;
-    protected $actualDetector;
-    protected $c1;
-    protected $c2;
     
     protected function setUp()
     {
         $this->registry = $this->getMock(ClassBasedRegistry::class);
         $this->proxy = new IntersectDetectorProxy($this->registry);
-        $this->actualDetector = new ValueGreaterThanIntersectDetector();
-        $this->c1 = new BooleanCondition(true);
-        $this->c2 = new ValueGreaterThan(false);
     }
 
     public function testRegisteringDetector()
     {
+        $actualDetector = new ValueGreaterThanIntersectDetector();
+        
         $this->registry->expects($this->atLeastOnce())
             ->method('associateValueWithClasses')
             ->with(
-                $this->actualDetector,
+                $actualDetector,
                 [BooleanCondition::class, ValueGreaterThan::class]
             );
         
         $this->proxy->register(
-            $this->actualDetector,
+            $actualDetector,
             BooleanCondition::class,
             ValueGreaterThan::class
         );
+    }
+    
+    public function testFetching()
+    {
+        $c1 = new BooleanCondition(true);
+        $c2 = new ValueGreaterThan(false);
+        
+        $detector = $this->getMock(IntersectDetector::class);
+        $detector->expects($this->any())
+            ->method("intersectExists")
+            ->willReturn(true);
+        
+        $this->registry->expects($this->any())
+            ->method("fetchValueByObjects")
+            ->will($this->returnValueMap([
+                [[$c1, $c2], $detector]
+            ]));
+        
+        $this->assertTrue($this->proxy->intersectExists($c1, $c2));
     }
 }
