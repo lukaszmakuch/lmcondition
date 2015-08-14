@@ -9,9 +9,24 @@
 
 namespace lukaszmakuch\LmCondition;
 
+use RuntimeException;
+
+/**
+ * Allows to group conditions with AND/OR operators.
+ * 
+ * @author Łukasz Makuch <kontakt@lukaszmakuch.pl>
+ * 
+ */
 class ConditionComposite extends ConditionAbstract
 {
+    /**
+     * @var Condition[]
+     */
     protected $ANDConditions;
+    
+    /**
+     * @var Condition[]
+     */
     protected $ORConditions;
     
     public function __construct()
@@ -20,12 +35,24 @@ class ConditionComposite extends ConditionAbstract
         $this->ORConditions = [];
     }
 
+    /**
+     * Adds AND condition.
+     * 
+     * @param Condition $c
+     * @return ConditionComposite self
+     */
     public function addAND(Condition $c)
     {
         $this->ANDConditions[] = $c;
         return $this;
     }
     
+    /**
+     * Adds OR condition.
+     * 
+     * @param \lukaszmakuch\LmCondition\Condition $c
+     * @return \lukaszmakuch\LmCondition\ConditionComposite self
+     */
     public function addOR(Condition $c)
     {
         $this->ORConditions[] = $c;
@@ -33,6 +60,8 @@ class ConditionComposite extends ConditionAbstract
     }
     
     /**
+     * Gets all previosuly added AND condtions.
+     * 
      * @return Condition[]
      */
     public function getANDConditions()
@@ -41,6 +70,8 @@ class ConditionComposite extends ConditionAbstract
     }
 
     /**
+     * Gets all previously added OR conditions.
+     * 
      * @return Condition[]
      */
     public function getORConditions()
@@ -48,6 +79,11 @@ class ConditionComposite extends ConditionAbstract
         return $this->ORConditions;
     }
     
+    /**
+     * Processes all previously added AND/OR conditions.
+     * 
+     * @return boolean
+     */
     protected function isTrueInImpl(Context $context)
     {
         $this->throwRuntimeExceptionIfEmpty();
@@ -63,20 +99,35 @@ class ConditionComposite extends ConditionAbstract
         return $this->allANDConditionsAreTrueIn($context);
     }
     
+    /**
+     * @throws RuntimeException if no AND/OR conditions have been added.
+     */
     protected function throwRuntimeExceptionIfEmpty()
     {
         if ($this->isEmpty()) {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 "Trying to check an empty condition composite"
             );
         }
     }
     
+    /**
+     * Checks whether no AND/OR conditions have been added.
+     * 
+     * @return boolean
+     */
     protected function isEmpty()
     {
         return empty($this->getORConditions()) && empty($this->getANDConditions());
     }
     
+    /**
+     * Checks whether at least one OR condition is met in that context.
+     * 
+     * @param \lukaszmakuch\LmCondition\Context $context
+     * 
+     * @return boolean
+     */
     protected function anyORConditionIsTrueIn(Context $context)
     {
         foreach ($this->getORConditions() as $ORCondition) {
@@ -88,6 +139,13 @@ class ConditionComposite extends ConditionAbstract
         return false;
     }
     
+    /**
+     * Checks whether all AND conditions are met in this context.
+     * 
+     * @param \lukaszmakuch\LmCondition\Context $context
+     * 
+     * @return boolean
+     */
     protected function allANDConditionsAreTrueIn(Context $context)
     {
         foreach ($this->getANDConditions() as $singleANDCondition) {

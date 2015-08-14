@@ -25,6 +25,8 @@ interface Condition
      * the passed context against this condition
      * 
      * @throws \InvalidArgumentException when it's not possible to check
+     * this condition in this context
+     * @throws \RuntimeException
      * @return boolean
      */
     public function isTrueIn(Context $context);
