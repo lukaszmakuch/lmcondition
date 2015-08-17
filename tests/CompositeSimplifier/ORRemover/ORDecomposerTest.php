@@ -165,6 +165,54 @@ class ORDecomposerTest extends PHPUnit_Framework_TestCase
         ));
     }
     
+    /**
+     * (A AND (B OR (C AND D AND (E OR F))))
+     * 
+     * should be decomposed to:
+     * 
+     * [
+     *     [A, B],
+     *     [A, C, D, E]
+     *     [A, C, D, F]
+     * ]
+     * 
+     */
+    public function testComplexStructureWithManyLevels()
+    {
+        //leaves
+        $A = new FakeCondition("A");
+        $B = new FakeCondition("B");
+        $C = new FakeCondition("C");
+        $D = new FakeCondition("D");
+        $E = new FakeCondition("E");
+        $F = new FakeCondition("F");
+        
+        //E OR F
+        $comp1 = new ConditionComposite();
+        $comp1->addOR($E)->addOR($F);
+        //C AND D AND (E OR F)
+        $comp2 = new ConditionComposite();
+        $comp2->addAND($C)->addAND($D)->addAND($comp1);
+        //B OR (C AND D AND (E OR F))
+        $comp3 = new ConditionComposite();
+        $comp3->addOR($B)->addOR($comp2);
+        //A AND (B OR (C AND D AND (E OR F)))
+        $composite = new ConditionComposite();
+        $composite->addAND($A)->addAND($comp3);
+        
+        $expected = [
+            [$A, $B],
+            [$A, $C, $D, $E],
+            [$A, $C, $D, $F],
+        ];
+        $decompositionResult = $this->decomposer->decomposeOR($composite);
+        
+        $this->assertTrue($this->decomposedStructuresAreIdentical(
+            $expected,
+            $decompositionResult
+        ));
+    }
+    
     protected function decomposedStructuresAreIdentical(array $arr1, array $arr2)
     {
         return $this->arraysAreIdentical($arr1, $arr2, function ($elem1, $elem2) {
