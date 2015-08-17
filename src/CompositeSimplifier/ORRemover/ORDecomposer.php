@@ -17,13 +17,13 @@ use lukaszmakuch\LmCondition\ConditionComposite;
  */
 class ORDecomposer
 {
-    public function decomposeOR(Condition $c)
+    public function decompose(Condition $c)
     {
-        if (!($c instanceof ConditionComposite)) {
-            return [[$c]];
+        if ($c instanceof ConditionComposite) {
+            return $this->decomposeComposite($c);
         }
         
-        return $this->decomposeComposite($c);
+        return [[$c]];
     }
     
     protected function decomposeComposite(ConditionComposite $c)
@@ -42,23 +42,20 @@ class ORDecomposer
         }
         
         $decomposedANDConditions = array_map(function (Condition $c) {
-            return $this->decomposeOR($c);
+            return $this->decompose($c);
         }, $ANDConditions);
         
-        $result = [[]];
-        foreach ($decomposedANDConditions as $setOfANDConditions) {
-            $result = $this->mergeAND($setOfANDConditions, $result);
-        }
-        
-        return $result;
+        return array_reduce($decomposedANDConditions, function ($result, $ANDConditions) {
+            return $this->mergeConditionsIntoChains($ANDConditions, $result);
+        }, [[]]);
     }
     
-    protected function mergeAND(array $ANDConditions, $currentChains)
+    protected function mergeConditionsIntoChains(array $conditions, array $chains)
     {
         $newChains = [];
-        foreach ($ANDConditions as $ANDCondition) {
-            foreach ($currentChains as $currentChain) {
-                $newChain = array_merge($currentChain, $ANDCondition);
+        foreach ($conditions as $condition) {
+            foreach ($chains as $currentChain) {
+                $newChain = array_merge($currentChain, $condition);
                 $newChains[] = $newChain;
             }
         }
@@ -68,15 +65,12 @@ class ORDecomposer
     
     protected function decomposeORConditionsOf(ConditionComposite $c)
     {
-        $decomposedORConditions = [];
-        $ORConditions = $c->getORConditions();
-        foreach ($ORConditions as $ORCondition) {
-            $decomposedORConditions = array_merge(
-                $decomposedORConditions, 
-                $this->decomposeOR($ORCondition)
-            );
-        }
-        
-        return $decomposedORConditions;
+        return array_reduce(
+            $c->getORConditions(),
+            function (array $decomposed, Condition $c) {
+                return array_merge($decomposed, $this->decompose($c));
+            },
+            []
+        );
     }
 }

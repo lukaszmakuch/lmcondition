@@ -49,7 +49,7 @@ class ORDecomposerTest extends PHPUnit_Framework_TestCase
         $expected = [
             [$A, $B],
         ];
-        $decompositionResult = $this->decomposer->decomposeOR($composite);
+        $decompositionResult = $this->decomposer->decompose($composite);
         
         $this->assertTrue($this->decomposedStructuresAreIdentical($expected, $decompositionResult));
         
@@ -85,7 +85,7 @@ class ORDecomposerTest extends PHPUnit_Framework_TestCase
         $expected = [
             [$A, $B, $C, $D],
         ];
-        $decompositionResult = $this->decomposer->decomposeOR($composite);
+        $decompositionResult = $this->decomposer->decompose($composite);
         
         $this->assertTrue($this->decomposedStructuresAreIdentical(
             $expected,
@@ -117,7 +117,7 @@ class ORDecomposerTest extends PHPUnit_Framework_TestCase
             [$A],
             [$B],
         ];
-        $decompositionResult = $this->decomposer->decomposeOR($composite);
+        $decompositionResult = $this->decomposer->decompose($composite);
         
         $this->assertTrue($this->decomposedStructuresAreIdentical(
             $expected, 
@@ -157,7 +157,7 @@ class ORDecomposerTest extends PHPUnit_Framework_TestCase
             [$A, $B],
             [$A, $C],
         ];
-        $decompositionResult = $this->decomposer->decomposeOR($comp2);
+        $decompositionResult = $this->decomposer->decompose($comp2);
         
         $this->assertTrue($this->decomposedStructuresAreIdentical(
             $expected,
@@ -205,7 +205,7 @@ class ORDecomposerTest extends PHPUnit_Framework_TestCase
             [$A, $C, $D, $E],
             [$A, $C, $D, $F],
         ];
-        $decompositionResult = $this->decomposer->decomposeOR($composite);
+        $decompositionResult = $this->decomposer->decompose($composite);
         
         $this->assertTrue($this->decomposedStructuresAreIdentical(
             $expected,
