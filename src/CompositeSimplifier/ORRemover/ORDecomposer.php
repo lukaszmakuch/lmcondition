@@ -19,43 +19,36 @@ class ORDecomposer
 {
     public function decomposeOR(Condition $c)
     {
-        return $this->decomposerORImpl($c);
-    }
-    
-    protected function decomposerORImpl(Condition $c)
-    {
         if (!($c instanceof ConditionComposite)) {
             return [[$c]];
         }
         
-        return $this->processComposite($c);
+        return $this->decomposeComposite($c);
     }
     
-    protected function processComposite(ConditionComposite $c)
+    protected function decomposeComposite(ConditionComposite $c)
     {
+        return array_merge(
+            $this->decomposeANDConditionsOf($c),
+            $this->decomposeORConditionsOf($c)
+        );
+    }
+    
+    protected function decomposeANDConditionsOf(ConditionComposite $c)
+    {
+        $ANDConditions = $c->getANDConditions();
+        if (empty($ANDConditions)) {
+            return [];
+        }
+        
         $decomposedANDConditions = array_map(function (Condition $c) {
             return $this->decomposeOR($c);
-        }, $c->getANDConditions());
+        }, $ANDConditions);
         
         $result = [[]];
         foreach ($decomposedANDConditions as $setOfANDConditions) {
             $result = $this->mergeAND($setOfANDConditions, $result);
         }
-        
-        $decomposedORConditions = [];
-        $ORConditions = $c->getORConditions();
-        foreach ($ORConditions as $ORCondition) {
-            $decomposedORConditions = array_merge(
-                $decomposedORConditions, 
-                $this->decomposeOR($ORCondition)
-            );
-        }
-        
-        if (empty($result[0])) {
-            $result = $decomposedORConditions;
-        } else {
-            $result = array_merge($result, $decomposedORConditions);
-        } 
         
         return $result;
     }
@@ -71,5 +64,19 @@ class ORDecomposer
         }
         
         return $newChains;
+    }
+    
+    protected function decomposeORConditionsOf(ConditionComposite $c)
+    {
+        $decomposedORConditions = [];
+        $ORConditions = $c->getORConditions();
+        foreach ($ORConditions as $ORCondition) {
+            $decomposedORConditions = array_merge(
+                $decomposedORConditions, 
+                $this->decomposeOR($ORCondition)
+            );
+        }
+        
+        return $decomposedORConditions;
     }
 }
