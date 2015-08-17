@@ -10,7 +10,6 @@
 namespace lukaszmakuch\LmCondition\CompositeSimplifier\ORRemover;
 
 use lukaszmakuch\LmCondition\ConditionComposite;
-use lukaszmakuch\LmCondition\tests\BooleanCondition;
 use lukaszmakuch\LmCondition\tests\FakeCondition;
 use PHPUnit_Framework_TestCase;
 
@@ -25,7 +24,7 @@ class ORDecomposerTest extends PHPUnit_Framework_TestCase
     
     protected function setUp()
     {
-        $this->decomposer = new ORDecomposer();
+        $this->decomposer = new Decomposer();
     }
     
     /**

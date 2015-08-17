@@ -18,7 +18,7 @@ use lukaszmakuch\LmCondition\ConditionComposite;
  * 
  * @author Łukasz Makuch <kontakt@lukaszmakuch.pl>
  */
-class ORDecomposer
+class Decomposer
 {
     /**
      * Takes any condition (while it's useful only with composites) and transform
