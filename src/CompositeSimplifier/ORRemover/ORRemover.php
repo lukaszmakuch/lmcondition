@@ -10,10 +10,11 @@
 namespace lukaszmakuch\LmCondition\CompositeSimplifier\ORRemover;
 
 use lukaszmakuch\LmCondition\Condition;
+use lukaszmakuch\LmCondition\ConditionComposite;
 
 /**
- * Description of ORRemover
- *
+ * Decomposes any complex ConditionComposite into a 2d composite.
+ * 
  * @author Łukasz Makuch <kontakt@lukaszmakuch.pl>
  */
 class ORRemover
@@ -21,12 +22,29 @@ class ORRemover
     protected $decomposer;
     protected $composer;
     
+    /**
+     * Provides dependencies.
+     * 
+     * @param Decomposer $decoposer used to decompose complex composite into an array
+     * @param Composer $composer compose a simpler composite from an array
+     */
     public function __construct(Decomposer $decoposer, Composer $composer)
     {
         $this->decomposer = $decoposer;
         $this->composer = $composer;
     }
     
+    /**
+     * (A AND (B OR C))
+     * 
+     * is translated into (the order may be different):
+     * 
+     * ((A AND B) OR (A AND C))
+     * 
+     * @param Condition $c
+     * 
+     * @return ConditionComposite[] composite containing only OR composites 
+     */
     public function leaveOnlyOneLevelAND(Condition $c)
     {
         return $this->composer->compose(
