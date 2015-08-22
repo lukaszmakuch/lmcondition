@@ -9,6 +9,7 @@
 
 namespace lukaszmakuch\LmCondition\CompositeSimplifier\ORRemover;
 
+use lukaszmakuch\ArrayUtils\ArrayComparator;
 use lukaszmakuch\LmCondition\ConditionComposite;
 use lukaszmakuch\LmCondition\tests\FakeCondition;
 use PHPUnit_Framework_TestCase;
@@ -90,7 +91,6 @@ class ORDecomposerTest extends PHPUnit_Framework_TestCase
             $expected,
             $decompositionResult
         ));
-        
     }
     
     /**
@@ -122,7 +122,6 @@ class ORDecomposerTest extends PHPUnit_Framework_TestCase
             $expected, 
             $decompositionResult
         ));
-        
     }
     
     
@@ -214,35 +213,12 @@ class ORDecomposerTest extends PHPUnit_Framework_TestCase
     
     protected function decomposedStructuresAreIdentical(array $arr1, array $arr2)
     {
-        return $this->arraysAreIdentical($arr1, $arr2, function ($elem1, $elem2) {
-            return $this->arrayHoldIdenticalSetOfElements($elem1, $elem2);
-        });
-    }
-    
-    protected function arrayHoldIdenticalSetOfElements(array $arr1, array $arr2)
-    {
-        return $this->arraysAreIdentical($arr1, $arr2, function ($elem1, $elem2) {
-            return ($elem1 === $elem2);
-        });
-    }
-    
-    /**
-     * Checks whether two arrays are of the same length and hold identical elements.
-     * 
-     * @param array $arr1
-     * @param array $arr2
-     * @param callable $comparisonFunction must return true if two elements are identical
-     * 
-     * @return boolean  true if arrays are indetical
-     */
-    protected function arraysAreIdentical(array $arr1, array $arr2, $comparisonFunction)
-    {
-        if (count($arr1) !== count($arr2)) {
-            return false;
-        }
-        
-        return empty(array_udiff($arr1, $arr2, function ($elem1, $elem2) use ($comparisonFunction) {
-            return ($comparisonFunction($elem1, $elem2)) ? 0 : -1;
-        }));
+        return ArrayComparator::arraysHoldEqualElements(
+            $arr1,
+            $arr2,
+            function ($arr1Row, $arr2Row) {
+                return ArrayComparator::arraysHoldEqualElements($arr1Row, $arr2Row);
+            }
+        );
     }
 }

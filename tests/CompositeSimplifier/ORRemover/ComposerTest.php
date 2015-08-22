@@ -10,9 +10,9 @@
 namespace lukaszmakuch\LmCondition\CompositeSimplifier\ORRemover;
 
 use InvalidArgumentException;
-use \lukaszmakuch\LmCondition\Condition;
-use \lukaszmakuch\LmCondition\ConditionComposite;
-use \lukaszmakuch\LmCondition\tests\FakeCondition;
+use lukaszmakuch\ArrayUtils\ArrayComparator;
+use lukaszmakuch\LmCondition\ConditionComposite;
+use lukaszmakuch\LmCondition\tests\FakeCondition;
 use PHPUnit_Framework_TestCase;
 
 class ComposerTest extends PHPUnit_Framework_TestCase
@@ -58,18 +58,13 @@ class ComposerTest extends PHPUnit_Framework_TestCase
         ConditionComposite $c,
         array $desiredDecomposedStructure
     ) {
-        $decomposedCondition = $this->decompose($c);
-        if (count($decomposedCondition) !== count($desiredDecomposedStructure)) {
-            return false;
-        }
-        
-        return empty(array_udiff(
-            $decomposedCondition,
-            $desiredDecomposedStructure,
+        return ArrayComparator::arraysHoldEqualElements(
+            $this->decompose($c), 
+            $desiredDecomposedStructure, 
             function(array $row1, array $row2) {
-                return ($this->arraysHoldIdenticalElements($row1, $row2)) ? 0 : -1;
+                return ArrayComparator::arraysHoldEqualElements($row1, $row2);
             }
-        ));
+        );
     }
     
     protected function decompose(ConditionComposite $c)
@@ -108,16 +103,5 @@ class ComposerTest extends PHPUnit_Framework_TestCase
        }
        
        return $result;
-    }
-    
-    protected function arraysHoldIdenticalElements(array $arr1, array $arr2)
-    {
-        if (count($arr1) !== count($arr2)) {
-            return false;
-        }
-        
-        return empty(array_udiff($arr1, $arr2, function($elem1, $elem2) {
-            return $elem1 === $elem2;
-        }));
     }
 }
