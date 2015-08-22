@@ -14,11 +14,23 @@ use lukaszmakuch\LmCondition\CompositeSimplifier\ORRemover\ORRemover;
 use lukaszmakuch\LmCondition\Condition;
 use lukaszmakuch\LmCondition\ConditionComposite;
 
+/**
+ * Compares two composites by using provided leaf equality comparator.
+ * 
+ * @author Łukasz Makuch <kontakt@lukaszmakuch.pl>
+ */
 class CompositeEqualityComparator implements EqualityComparator
 {
     protected $leafEqualityComparator;
     protected $ORRemoverr;
     
+    /**
+     * Provides dependencies.
+     * 
+     * @param \lukaszmakuch\LmCondition\EqualityComparator\EqualityComparator $leafEqualityComparator
+     * used to compare leaves
+     * @param ORRemover $ORRemover used to simplify comparison operation 
+     */
     public function __construct(
         EqualityComparator $leafEqualityComparator,
         ORRemover $ORRemover
@@ -38,6 +50,15 @@ class CompositeEqualityComparator implements EqualityComparator
         );
     }
     
+    /**
+     * Compares composites that contain only AND conditions (that are not composites).
+     * 
+     * @param ConditionComposite $comp1
+     * @param ConditionComposite $comp2
+     * 
+     * @throws \InvalidArgumentException when it's not possible to compare leaves
+     * @return boolean
+     */
     protected function ANDCompositesAreEqual(
         ConditionComposite $comp1,
         ConditionComposite $comp2
