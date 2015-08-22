@@ -13,11 +13,23 @@ use lukaszmakuch\LmCondition\CompositeSimplifier\ORRemover\ORRemover;
 use lukaszmakuch\LmCondition\Condition;
 use lukaszmakuch\LmCondition\ConditionComposite;
 
+/**
+ * Looks for intersection between two condition composites of any complexity.
+ * 
+ * @author Łukasz Makuch <kontakt@lukaszmakuch.pl>
+ */
 class CompositeIntersectDetector implements IntersectDetector
 {
     protected $leafIntersectDetector;
     protected $ORRemover;
     
+    /**
+     * Provides dependencies.
+     * 
+     * @param IntersectDetector $leafIntersectDetector actually compares 
+     * condition leaves
+     * @param ORRemover $ORRemover simplifies detection process
+     */
     public function __construct(
         IntersectDetector $leafIntersectDetector,
         ORRemover $ORRemover
@@ -34,6 +46,19 @@ class CompositeIntersectDetector implements IntersectDetector
         );
     }
     
+    /**
+     * Checks whether intersection exists between at least one pair of 
+     * composites from the first and the second set.
+     * 
+     * @param ConditionComposite[] $setOfANDComposites1 array of composites
+     * that hold only AND conditions that are not composites.
+     * @param ConditionComposite[] $setOfANDComposites2 array of composites
+     * that hold only AND conditions that are not composites.
+     * 
+     * @throws \InvalidArgumentException if it's not possible to look for
+     * intersection between given conditions
+     * @return boolean true if intersection exists
+     */
     protected function intersectionExistsBetweenAtLeastOnePairOfANDChains(
         array $setOfANDComposites1,
         array $setOfANDComposites2
@@ -49,6 +74,18 @@ class CompositeIntersectDetector implements IntersectDetector
         return false;
     }
     
+    /**
+     * Checks whether intersection exsits among all AND conditions within
+     * these composites.
+     * 
+     * @param ConditionComposite $ANDComposite1
+     * @param ConditionComposite $ANDComposite2
+     * 
+     * @throws \InvalidArgumentException if it's not possible to look for
+     * intersection between given conditions
+     * @return boolean if intersection exist among all AND conditions
+     * withing these composites
+     */
     protected function intersectionExistsBetween(
         ConditionComposite $ANDComposite1,
         ConditionComposite $ANDComposite2
