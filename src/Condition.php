@@ -53,7 +53,7 @@ interface Condition
      * than calling this method makes it "value NOT greater than X" 
      * and calling it again takes no effect as this stays "value NOT greater than X".
      * 
-     * @return null
+     * @return Condition self
      */
     public function negate();
     
@@ -62,7 +62,7 @@ interface Condition
      * 
      * If the condition is not negated, then calling this method takes no effect.
      * 
-     * @return null
+     * @return Condition self
      */
     public function removeNegation();
 }

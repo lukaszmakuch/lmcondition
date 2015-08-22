@@ -45,11 +45,13 @@ abstract class ConditionAbstract implements Condition
     public function negate()
     {
         $this->isNegated = true;
+        return $this;
     }
 
     public function removeNegation()
     {
         $this->isNegated = false;
+        return $this;
     }
 
     /**

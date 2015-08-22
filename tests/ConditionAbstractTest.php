@@ -45,6 +45,12 @@ class ConditionAbstractTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->c->isNegated());
     }
     
+    public function testNestingNegation()
+    {
+        $this->c->negate()->removeNegation();
+        $this->assertFalse($this->c->isNegated());
+    }
+    
     public function testNegatingTwoTimes()
     {
         $this->c->negate();
