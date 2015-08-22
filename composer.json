@@ -23,7 +23,8 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "lukaszmakuch/class-based-registry": "0.0.1"
+        "lukaszmakuch/class-based-registry": "0.0.1",
+        "lukaszmakuch/array-utils-comparator": "1.0.0"
     },
     "require-dev": {
         "phpunit/phpunit": "4.7.*",
