@@ -22,6 +22,12 @@ class ValueGreaterThanIntersectDetector implements IntersectDetector
     
     protected function intersectExistsImpl(ValueGreaterThan $c1, ValueGreaterThan $c2)
     {
-        return ($c1->isNegated() === $c2->isNegated());
+        if (!$c1->isNegated() && $c2->isNegated()) {
+            return ($c2->getMustBeGreaterThanValue() > $c1->getMustBeGreaterThanValue());
+        } elseif ($c1->isNegated() && !$c2->isNegated()) {
+            return ($c1->getMustBeGreaterThanValue() > $c2->getMustBeGreaterThanValue());
+        }
+        
+        return true;
     }
 }
