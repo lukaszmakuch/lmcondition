@@ -17,6 +17,7 @@
     },
     "autoload-dev": {
         "psr-4": {
+            "lukaszmakuch\\LmCondition\\examples\\": "examples/",
             "lukaszmakuch\\LmCondition\\tests\\": "tests/",
             "lukaszmakuch\\LmCondition\\tests\\": "tests-src/"
         }
