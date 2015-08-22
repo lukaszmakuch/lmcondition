@@ -9,6 +9,7 @@
 
 namespace lukaszmakuch\LmCondition\IntersectDetector;
 
+use InvalidArgumentException;
 use lukaszmakuch\ClassBasedRegistry\ClassBasedRegistry;
 use lukaszmakuch\LmCondition\Condition;
 
@@ -25,7 +26,8 @@ use lukaszmakuch\LmCondition\Condition;
 class IntersectDetectorProxy implements IntersectDetector
 {
     protected $detectorToCondClassesReg;
-
+    protected $defaultDetector;
+    
     /**
      * Provides dependencies.
      * 
@@ -34,6 +36,7 @@ class IntersectDetectorProxy implements IntersectDetector
     public function __construct(ClassBasedRegistry $r)
     {
         $this->detectorToCondClassesReg = $r;
+        $this->defaultDetector = null;
     }
     
     /**
@@ -41,7 +44,7 @@ class IntersectDetectorProxy implements IntersectDetector
      * 
      * Order of classes doesn't matter.
      * 
-     * @param \lukaszmakuch\LmCondition\IntersectDetector\IntersectDetector $detector
+     * @param IntersectDetector $detector
      * @param String $condClass1
      * @param String $condClass2
      * 
@@ -55,6 +58,17 @@ class IntersectDetectorProxy implements IntersectDetector
         );
     }
     
+    /**
+     * Sets default detector used when no suitable detector for given conditions
+     * may be found.
+     * 
+     * @param IntersectDetector $detector
+     */
+    public function setDefault(IntersectDetector $detector)
+    {
+        $this->defaultDetector = $detector;
+    }
+    
     public function intersectExists(Condition $c1, Condition $c2)
     {
         return $this->getDetectorBy($c1, $c2)
@@ -62,16 +76,25 @@ class IntersectDetectorProxy implements IntersectDetector
     }
     
     /**
-     * Looks for a suitable detector.
+     * Looks for a suitable detector or returns the deafult detector if any 
+     * has been set.
      * 
      * @param Condition $c1
      * @param Condition $c2
      * 
      * @return IntersectDetector
-     * @throws \InvalidArgumentException if it's not possible to obtain any detector
+     * @throws InvalidArgumentException if it's not possible to obtain any detector
      */
     protected function getDetectorBy(Condition $c1, Condition $c2)
     {
-        return $this->detectorToCondClassesReg->fetchValueByObjects([$c1, $c2]);
+        try {
+            return $this->detectorToCondClassesReg->fetchValueByObjects([$c1, $c2]);
+        } catch (InvalidArgumentException $e) {
+            if (null === $this->defaultDetector) {
+                throw $e;
+            }
+            
+            return $this->defaultDetector;
+        }
     }
 }

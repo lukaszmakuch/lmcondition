@@ -63,4 +63,24 @@ class IntersectDetectorProxyTest extends PHPUnit_Framework_TestCase
         
         $this->assertTrue($this->proxy->intersectExists($c1, $c2));
     }
+    
+    public function testSettingDefaultDetector()
+    {
+        $c1 = new BooleanCondition(true);
+        $c2 = new ValueGreaterThan(false);
+        
+        $defaultDetector = $this->getMock(IntersectDetector::class);
+        $defaultDetector->expects($this->atLeastOnce())
+            ->method("intersectExists")
+            ->with($c1, $c2)
+            ->willReturn(true);
+        
+        $this->proxy->setDefault($defaultDetector);
+        
+        $this->registry->expects($this->atLeastOnce())
+            ->method("fetchValueByObjects")
+            ->will($this->throwException(new \InvalidArgumentException()));
+        
+        $this->assertTrue($this->proxy->intersectExists($c1, $c2));
+    }
 }
