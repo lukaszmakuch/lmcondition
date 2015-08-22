@@ -47,21 +47,21 @@ $easyBookWithShortTitle = (new Book())
 #### Is a condition true?
 Is this book wise?
 ```php
-$wiseBookCondition->isTrueIn($easyBookWithLongTitle), //true
-$wiseBookCondition->isTrueIn($hardBookWithShortTitle), //true
-$wiseBookCondition->isTrueIn($easyBookWithShortTitle), //false
+$wiseBookCondition->isTrueIn($easyBookWithLongTitle); //true
+$wiseBookCondition->isTrueIn($hardBookWithShortTitle); //true
+$wiseBookCondition->isTrueIn($easyBookWithShortTitle); //false
 ```
 Is it for children?
 ```php
-$booksForChildrenCondition->isTrueIn($easyBookWithLongTitle), //false
-$booksForChildrenCondition->isTrueIn($hardBookWithShortTitle), //false
-$booksForChildrenCondition->isTrueIn($easyBookWithShortTitle), //true
+$booksForChildrenCondition->isTrueIn($easyBookWithLongTitle); //false
+$booksForChildrenCondition->isTrueIn($hardBookWithShortTitle); //false
+$booksForChildrenCondition->isTrueIn($easyBookWithShortTitle); //true
 ```
 Is the title longer than 99 characters?
 ```php
-$titleLogerThan99Condition->isTrueIn($easyBookWithLongTitle), //false
-$titleLogerThan99Condition->isTrueIn($hardBookWithShortTitle), //false
-$titleLogerThan99Condition->isTrueIn($easyBookWithShortTitle) //false
+$titleLogerThan99Condition->isTrueIn($easyBookWithLongTitle); //false
+$titleLogerThan99Condition->isTrueIn($hardBookWithShortTitle); //false
+$titleLogerThan99Condition->isTrueIn($easyBookWithShortTitle);//false
 ```
 
 #### Does intersection exist between two conditions?
@@ -71,7 +71,7 @@ A title of a wise book may be longer than 99 characters.
 $intersectDetector->intersectExists(
     $wiseBookCondition,
     $titleLogerThan99Condition
-), //true
+); //true
 ```
 But books for children have no titles that long.
 ```php
@@ -79,7 +79,7 @@ But books for children have no titles that long.
 $intersectDetector->intersectExists(
     $booksForChildrenCondition,
     $titleLogerThan99Condition
-) //false
+); //false
 ```
 
 #### Are two conditions equal?
@@ -89,7 +89,7 @@ Two condition objects may be equal.
 $comparator->equal(
     $titleLogerThan99Condition,
     new TitleOfMoreCharsThan(99)
-) //true
+); //true
 ```
 ## Installation
 Use [composer](https://getcomposer.org) to get the latest version:
