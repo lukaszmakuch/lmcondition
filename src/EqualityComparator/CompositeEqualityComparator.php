@@ -33,16 +33,21 @@ class CompositeEqualityComparator implements EqualityComparator
             $this->ORRemoverr->leaveOnlyOneLevelAND($c1)->getORConditions(),
             $this->ORRemoverr->leaveOnlyOneLevelAND($c2)->getORConditions(),
             function (ConditionComposite $comp1, ConditionComposite $comp2) {
-                return ArrayComparator::arraysHoldEqualElements(
-                    $comp1->getANDConditions(),
-                    $comp2->getANDConditions(),
-                    function (Condition $c1, Condition $c2) {
-                        return $this->leafEqualityComparator->equal($c1, $c2);
-                    }
-                );
+                return $this->ANDCompositesAreEqual($comp1, $comp2);
             }
         );
     }
     
-    
+    protected function ANDCompositesAreEqual(
+        ConditionComposite $comp1,
+        ConditionComposite $comp2
+    ) {
+        return ArrayComparator::arraysHoldEqualElements(
+            $comp1->getANDConditions(),
+            $comp2->getANDConditions(),
+            function (Condition $c1, Condition $c2) {
+                return $this->leafEqualityComparator->equal($c1, $c2);
+            }
+        );
+    }
 }
