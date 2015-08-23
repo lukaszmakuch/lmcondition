@@ -2,6 +2,7 @@
 
 This library allows to build complex conditions connected with AND/OR statements with subconditions support and then check them in some context.
 
+![travis](https://travis-ci.org/lukaszmakuch/lmcondition.svg)
 ## Usage
 
 ### Getting objects
