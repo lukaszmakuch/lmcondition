@@ -9,8 +9,8 @@
 
 namespace lukaszmakuch\LmCondition\IntersectDetector;
 
-use InvalidArgumentException;
 use lukaszmakuch\ClassBasedRegistry\ClassBasedRegistry;
+use lukaszmakuch\ClassBasedRegistry\Exception\ValueNotFound;
 use lukaszmakuch\LmCondition\Condition;
 
 /**
@@ -83,15 +83,15 @@ class IntersectDetectorProxy implements IntersectDetector
      * @param Condition $c2
      * 
      * @return IntersectDetector
-     * @throws InvalidArgumentException if it's not possible to obtain any detector
+     * @throws Exception\ImpossibleToLookForIntersection if it's not possible to obtain any detector
      */
     protected function getDetectorBy(Condition $c1, Condition $c2)
     {
         try {
             return $this->detectorToCondClassesReg->fetchValueByObjects([$c1, $c2]);
-        } catch (InvalidArgumentException $e) {
+        } catch (ValueNotFound $e) {
             if (null === $this->defaultDetector) {
-                throw $e;
+                throw new Exception\ImpossibleToLookForIntersection();
             }
             
             return $this->defaultDetector;

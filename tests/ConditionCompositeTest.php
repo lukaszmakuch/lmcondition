@@ -7,11 +7,13 @@
  * @license MIT http://opensource.org/licenses/MIT
  */
 
-use lukaszmakuch\LmCondition\ConditionComposite;
 use lukaszmakuch\LmCondition\Condition;
+use lukaszmakuch\LmCondition\ConditionComposite;
+use lukaszmakuch\LmCondition\Exception\ImpossibleToCheckCondition;
 use lukaszmakuch\LmCondition\tests\BooleanCondition;
+use lukaszmakuch\LmCondition\tests\DummyContext;
 
-class ConditionCompositeTest extends \PHPUnit_Framework_TestCase
+class ConditionCompositeTest extends PHPUnit_Framework_TestCase
 {
     protected $composite;
     protected $context;
@@ -19,11 +21,11 @@ class ConditionCompositeTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->composite = new ConditionComposite();
-        $this->context = new \lukaszmakuch\LmCondition\tests\DummyContext();
+        $this->context = new DummyContext();
     }
     
     /**
-     * @expectedException \RuntimeException
+     * @expectedException lukaszmakuch\LmCondition\Exception\ImpossibleToCheckCondition
      */
     public function testExceptionIfUsingEmpty()
     {
@@ -131,7 +133,7 @@ class ConditionCompositeTest extends \PHPUnit_Framework_TestCase
         $stub->method("isTrueIn")
             ->willReturn($resultTrueOrFalse);
         
-        $stub->expects($this->atleastOnce())
+        $stub->expects($this->atLeastOnce())
                 ->method("isTrueIn")
                 ->with($this->identicalTo($this->context));
         

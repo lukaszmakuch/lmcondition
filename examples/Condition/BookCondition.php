@@ -12,14 +12,14 @@ namespace lukaszmakuch\LmCondition\examples\Condition;
 use lukaszmakuch\LmCondition\ConditionAbstract;
 use lukaszmakuch\LmCondition\Context;
 use lukaszmakuch\LmCondition\examples\Context\Book;
-use InvalidArgumentException;
+use lukaszmakuch\LmCondition\Exception\InvalidContext;
 
 abstract class BookCondition extends ConditionAbstract
 {
     protected function isTrueInImpl(Context $context)
     {
         if (!($context instanceof Book)) {
-            throw new InvalidArgumentException("invalid context");
+            throw new InvalidContext();
         }
         
         return $this->isTrueForBook($context);

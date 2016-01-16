@@ -13,6 +13,7 @@ use lukaszmakuch\ArrayUtils\ArrayComparator;
 use lukaszmakuch\LmCondition\CompositeSimplifier\ORRemover\ORRemover;
 use lukaszmakuch\LmCondition\Condition;
 use lukaszmakuch\LmCondition\ConditionComposite;
+use lukaszmakuch\LmCondition\EqualityComparator\Exception\IncomparableConditions;
 
 /**
  * Compares two composites by using provided leaf equality comparator.
@@ -27,7 +28,7 @@ class CompositeEqualityComparator implements EqualityComparator
     /**
      * Provides dependencies.
      * 
-     * @param \lukaszmakuch\LmCondition\EqualityComparator\EqualityComparator $leafEqualityComparator
+     * @param EqualityComparator $leafEqualityComparator
      * used to compare leaves
      * @param ORRemover $ORRemover used to simplify comparison operation 
      */
@@ -56,7 +57,7 @@ class CompositeEqualityComparator implements EqualityComparator
      * @param ConditionComposite $comp1
      * @param ConditionComposite $comp2
      * 
-     * @throws \InvalidArgumentException when it's not possible to compare leaves
+     * @throws IncomparableConditions when it's not possible to compare leaves
      * @return boolean
      */
     protected function ANDCompositesAreEqual(

@@ -10,6 +10,7 @@
 namespace lukaszmakuch\LmCondition\EqualityComparator;
 
 use lukaszmakuch\LmCondition\Condition;
+use lukaszmakuch\LmCondition\EqualityComparator\Exception\IncomparableConditions;
 
 /**
  * Allows to compare two condition for equality.
@@ -26,7 +27,7 @@ interface EqualityComparator
      * @param Condition $c1
      * @param Condition $c2
      * 
-     * @throws \InvalidArgumentException if it's not possible to compare these conditions
+     * @throws IncomparableConditions if it's not possible to compare these conditions
      * @return bool true if these conditions are equal, false otherwise
      */
     public function equal(Condition $c1, Condition $c2);

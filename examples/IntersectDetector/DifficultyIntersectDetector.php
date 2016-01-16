@@ -9,10 +9,10 @@
 
 namespace lukaszmakuch\LmCondition\examples\IntersectDetector;
 
-use InvalidArgumentException;
 use lukaszmakuch\LmCondition\Condition;
 use lukaszmakuch\LmCondition\examples\Condition\Difficulty;
 use lukaszmakuch\LmCondition\examples\EqualityComparator\DifficultyComparator;
+use lukaszmakuch\LmCondition\IntersectDetector\Exception\ImpossibleToLookForIntersection;
 use lukaszmakuch\LmCondition\IntersectDetector\IntersectDetector;
 
 class DifficultyIntersectDetector implements IntersectDetector
@@ -30,7 +30,7 @@ class DifficultyIntersectDetector implements IntersectDetector
             !($c1 instanceof Difficulty) 
             || !($c2 instanceof Difficulty)
         ) {
-            throw new InvalidArgumentException("unsupported conditions");
+            throw new ImpossibleToLookForIntersection();
         }
         
         return $this->equalityComparator->equal($c1, $c2);

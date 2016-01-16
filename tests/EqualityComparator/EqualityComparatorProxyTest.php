@@ -9,7 +9,6 @@
 
 namespace lukaszmakuch\LmCondition\EqualityComparator;
 
-use InvalidArgumentException;
 use lukaszmakuch\ClassBasedRegistry\ClassBasedRegistry;
 use lukaszmakuch\LmCondition\tests\BooleanCondition;
 use lukaszmakuch\LmCondition\tests\ValueGreaterThan;
@@ -29,7 +28,7 @@ class EqualityComparatorProxyTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException lukaszmakuch\LmCondition\EqualityComparator\Exception\IncomparableConditions
      */
     public function testThrowingExceptionIfNoComparatorRegistered()
     {

@@ -12,6 +12,7 @@ namespace lukaszmakuch\LmCondition\IntersectDetector;
 use lukaszmakuch\LmCondition\CompositeSimplifier\ORRemover\ORRemover;
 use lukaszmakuch\LmCondition\Condition;
 use lukaszmakuch\LmCondition\ConditionComposite;
+use lukaszmakuch\LmCondition\IntersectDetector\Exception\ImpossibleToLookForIntersection;
 
 /**
  * Looks for intersection between two condition composites of any complexity.
@@ -55,8 +56,7 @@ class CompositeIntersectDetector implements IntersectDetector
      * @param ConditionComposite[] $setOfANDComposites2 array of composites
      * that hold only AND conditions that are not composites.
      * 
-     * @throws \InvalidArgumentException if it's not possible to look for
-     * intersection between given conditions
+     * @throws ImpossibleToLookForIntersection
      * @return boolean true if intersection exists
      */
     protected function intersectionExistsBetweenAtLeastOnePairOfANDChains(
@@ -81,8 +81,7 @@ class CompositeIntersectDetector implements IntersectDetector
      * @param ConditionComposite $ANDComposite1
      * @param ConditionComposite $ANDComposite2
      * 
-     * @throws \InvalidArgumentException if it's not possible to look for
-     * intersection between given conditions
+     * @throws ImpossibleToLookForIntersection
      * @return boolean if intersection exist among all AND conditions
      * withing these composites
      */

@@ -9,9 +9,7 @@
 
 namespace lukaszmakuch\LmCondition\CompositeSimplifier\ORRemover;
 
-use InvalidArgumentException;
 use \lukaszmakuch\LmCondition\ConditionComposite;
-use \lukaszmakuch\LmCondition\tests\FakeCondition;
 use PHPUnit_Framework_TestCase;
 
 class ORRemoverTest extends PHPUnit_Framework_TestCase

@@ -10,6 +10,7 @@
 namespace lukaszmakuch\LmCondition\IntersectDetector;
 
 use lukaszmakuch\LmCondition\Condition;
+use lukaszmakuch\LmCondition\IntersectDetector\Exception\ImpossibleToLookForIntersection;
 
 /**
  * Tells whether any intersection occurs between two conditions.
@@ -31,8 +32,7 @@ interface IntersectDetector
      * @param Condition $c1
      * @param Condition $c2
      * 
-     * @throws \InvalidArgumentException if it's not possible to look for
-     * intersection between given conditions
+     * @throws ImpossibleToLookForIntersection
      * @return bool true if intersection occurs, false otherwise
      */
     public function intersectExists(Condition $c1, Condition $c2);

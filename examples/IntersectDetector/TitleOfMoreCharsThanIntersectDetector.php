@@ -11,8 +11,8 @@ namespace lukaszmakuch\LmCondition\examples\IntersectDetector;
 
 use lukaszmakuch\LmCondition\Condition;
 use lukaszmakuch\LmCondition\examples\Condition\TitleOfMoreCharsThan;
+use lukaszmakuch\LmCondition\IntersectDetector\Exception\ImpossibleToLookForIntersection;
 use lukaszmakuch\LmCondition\IntersectDetector\IntersectDetector;
-use InvalidArgumentException;
 
 class TitleOfMoreCharsThanIntersectDetector implements IntersectDetector
 {
@@ -22,7 +22,7 @@ class TitleOfMoreCharsThanIntersectDetector implements IntersectDetector
             !($c1 instanceof TitleOfMoreCharsThan) 
             || !($c2 instanceof TitleOfMoreCharsThan)
         ) {
-            throw new InvalidArgumentException("unsupported conditions");
+            throw new ImpossibleToLookForIntersection();
         }
         
         if (!$c1->isNegated() && $c2->isNegated()) {

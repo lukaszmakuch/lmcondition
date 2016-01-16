@@ -10,6 +10,7 @@
 namespace lukaszmakuch\LmCondition\tests\IntersectDetector;
 
 use lukaszmakuch\ClassBasedRegistry\ClassBasedRegistry;
+use lukaszmakuch\ClassBasedRegistry\Exception\ValueNotFound;
 use lukaszmakuch\LmCondition\IntersectDetector\IntersectDetector;
 use lukaszmakuch\LmCondition\IntersectDetector\IntersectDetectorProxy;
 use lukaszmakuch\LmCondition\tests\BooleanCondition;
@@ -79,7 +80,7 @@ class IntersectDetectorProxyTest extends PHPUnit_Framework_TestCase
         
         $this->registry->expects($this->atLeastOnce())
             ->method("fetchValueByObjects")
-            ->will($this->throwException(new \InvalidArgumentException()));
+            ->will($this->throwException(new ValueNotFound()));
         
         $this->assertTrue($this->proxy->intersectExists($c1, $c2));
     }

@@ -11,8 +11,8 @@ namespace lukaszmakuch\LmCondition\examples\EqualityComparator;
 
 use lukaszmakuch\LmCondition\Condition;
 use lukaszmakuch\LmCondition\EqualityComparator\EqualityComparator;
+use lukaszmakuch\LmCondition\EqualityComparator\Exception\IncomparableConditions;
 use lukaszmakuch\LmCondition\examples\Condition\Difficulty;
-use InvalidArgumentException;
 
 class DifficultyComparator implements EqualityComparator
 {
@@ -22,7 +22,7 @@ class DifficultyComparator implements EqualityComparator
             !($c1 instanceof Difficulty) 
             || !($c2 instanceof Difficulty)
         ) {
-            throw new InvalidArgumentException("unsupported conditions");
+            throw new IncomparableConditions();
         }
         
         return (

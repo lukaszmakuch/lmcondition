@@ -9,6 +9,9 @@
 
 namespace lukaszmakuch\LmCondition;
 
+use lukaszmakuch\LmCondition\Exception\ImpossibleToCheckCondition;
+use lukaszmakuch\LmCondition\Exception\InvalidContext;
+
 /**
  * Represents any condition that may be true in some context 
  * and it is possible to negate it.
@@ -20,13 +23,12 @@ interface Condition
     /**
      * Checks whether this condition is true in this context.
      * 
-     * @param \lukaszmakuch\LmCondition\Context $context in which the condition 
+     * @param Context $context in which the condition 
      * is checked
      * the passed context against this condition
      * 
-     * @throws \InvalidArgumentException when it's not possible to check
-     * this condition in this context
-     * @throws \RuntimeException
+     * @throws InvalidContext
+     * @throws ImpossibleToCheckCondition
      * @return boolean
      */
     public function isTrueIn(Context $context);

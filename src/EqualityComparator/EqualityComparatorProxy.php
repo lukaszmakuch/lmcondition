@@ -9,9 +9,10 @@
 
 namespace lukaszmakuch\LmCondition\EqualityComparator;
 
-use InvalidArgumentException;
 use lukaszmakuch\ClassBasedRegistry\ClassBasedRegistry;
+use lukaszmakuch\ClassBasedRegistry\Exception\ValueNotFound;
 use lukaszmakuch\LmCondition\Condition;
+use lukaszmakuch\LmCondition\EqualityComparator\Exception\IncomparableConditions;
 
 /**
  * Hides many actual comparators behind the common interface.
@@ -48,12 +49,12 @@ class EqualityComparatorProxy implements EqualityComparator
      * 
      * Condition classes order doesn't matter.
      * 
-     * @param \lukaszmakuch\LmCondition\EqualityComparator\EqualityComparator $actualComparator
+     * @param EqualityComparator $actualComparator
      * @param String $conditionClass1 condition class
      * @param String $conditionClass2 another condition class
      * 
      * @return EqualityComparator
-     * @throws \InvalidArgumentException if it's not possible to find proper
+     * @throws IncomparableConditions if it's not possible to find proper
      * comparator
      */
     public function register(
@@ -71,11 +72,15 @@ class EqualityComparatorProxy implements EqualityComparator
      * @param Condition $c1
      * @param Condition $c2
      * 
-     * @throws InvalidArgumentException
+     * @throws IncomparableConditions
      * @return EqualityComparator
      */
     protected function findComparatorFor(Condition $c1, Condition $c2)
     {
-        return $this->objectToClassesRegistry->fetchValueByObjects([$c1, $c2]);
+        try {
+            return $this->objectToClassesRegistry->fetchValueByObjects([$c1, $c2]);
+        } catch (ValueNotFound $e) {
+            throw new IncomparableConditions("no suitable comparator found");
+        }
     }
 }

@@ -9,7 +9,7 @@
 
 namespace lukaszmakuch\LmCondition;
 
-use RuntimeException;
+use lukaszmakuch\LmCondition\Exception\ImpossibleToCheckCondition;
 
 /**
  * Allows to group conditions with AND/OR operators.
@@ -50,8 +50,8 @@ class ConditionComposite extends ConditionAbstract
     /**
      * Adds OR condition.
      * 
-     * @param \lukaszmakuch\LmCondition\Condition $c
-     * @return \lukaszmakuch\LmCondition\ConditionComposite self
+     * @param Condition $c
+     * @return ConditionComposite self
      */
     public function addOR(Condition $c)
     {
@@ -86,7 +86,7 @@ class ConditionComposite extends ConditionAbstract
      */
     protected function isTrueInImpl(Context $context)
     {
-        $this->throwRuntimeExceptionIfEmpty();
+        $this->throwExceptionIfEmpty();
         
         if ($this->anyORConditionIsTrueIn($context)) {
             return true;
@@ -100,12 +100,12 @@ class ConditionComposite extends ConditionAbstract
     }
     
     /**
-     * @throws RuntimeException if no AND/OR conditions have been added.
+     * @throws ImpossibleToCheckCondition if no AND/OR conditions have been added.
      */
-    protected function throwRuntimeExceptionIfEmpty()
+    protected function throwExceptionIfEmpty()
     {
         if ($this->isEmpty()) {
-            throw new RuntimeException(
+            throw new ImpossibleToCheckCondition(
                 "Trying to check an empty condition composite"
             );
         }
@@ -124,7 +124,7 @@ class ConditionComposite extends ConditionAbstract
     /**
      * Checks whether at least one OR condition is met in that context.
      * 
-     * @param \lukaszmakuch\LmCondition\Context $context
+     * @param Context $context
      * 
      * @return boolean
      */
@@ -142,7 +142,7 @@ class ConditionComposite extends ConditionAbstract
     /**
      * Checks whether all AND conditions are met in this context.
      * 
-     * @param \lukaszmakuch\LmCondition\Context $context
+     * @param Context $context
      * 
      * @return boolean
      */

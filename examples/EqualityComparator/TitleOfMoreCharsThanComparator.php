@@ -11,8 +11,8 @@ namespace lukaszmakuch\LmCondition\examples\EqualityComparator;
 
 use lukaszmakuch\LmCondition\Condition;
 use lukaszmakuch\LmCondition\EqualityComparator\EqualityComparator;
+use lukaszmakuch\LmCondition\EqualityComparator\Exception\IncomparableConditions;
 use lukaszmakuch\LmCondition\examples\Condition\TitleOfMoreCharsThan;
-use InvalidArgumentException;
 
 class TitleOfMoreCharsThanComparator implements EqualityComparator
 {
@@ -22,7 +22,7 @@ class TitleOfMoreCharsThanComparator implements EqualityComparator
             !($c1 instanceof TitleOfMoreCharsThan) 
             || !($c2 instanceof TitleOfMoreCharsThan)
         ) {
-            throw new InvalidArgumentException("unsupported conditions");
+            throw new IncomparableConditions();
         }
         
         return (
